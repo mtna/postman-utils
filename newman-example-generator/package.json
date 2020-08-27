@@ -1,0 +1,14 @@
+{
+  "name": "newman-example-generator",
+  "version": "1.0.0-alpha.1",
+  "description": "A custom reporter that runs a collection and saves the responses as example responses for corresponding request in the collection.",
+  "main": "example-generator.js",
+  "author": "Andrew DeCarlo <andrew.decarlo@mtna.us>",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "newman": "^5.1.2"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
