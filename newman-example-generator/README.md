@@ -6,7 +6,7 @@ The usefullness of a Postman collection can be greatly increased by adding saved
 
 When creating small collections it is simple enough to accomplish this through the Postman UI, saving a response after a request is run. However, this can be tedious and time consuming on any collection with more than a few requests. If a collection has been built up over time without saving responses, imported from another source without saved responses, or is being created programmatically it would be convenient to have some way to expedite the process. 
 
-This is the coal of the newman-example-generator. It will take a Postman collection JSON file, run all the requests, and save the responses to the appropriate request. The example generator uses the request ID to line up the response with the appropriate request. 
+This is the goal of the newman-example-generator. It will take a Postman collection JSON file, run all the requests, and save the responses to the appropriate request. The example generator uses the request ID to line up the response with the appropriate request. 
 
 ## Usage
 
