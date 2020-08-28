@@ -16,6 +16,6 @@ To use the generator:
 
 - clone this the newman-example-generator
 - Install newman in your local newman-example-generator directory, `npm install newman` 
-- Run the generator on your Postman collection JSON file, `node example-generatory.js <mycollection>.json`
+- Run the generator on your Postman collection JSON file, `node example-generator.js <mycollection>.json`
 - This will generate the file `<mycollection>-examples.json`
 - The generated file can be used to publish the collection for the first time or to update an already published collection through the Postman API. 
