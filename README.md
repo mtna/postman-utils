@@ -4,4 +4,4 @@ This repository is a collection of [Postman](https://www.postman.com/) utilities
 
 - [newman-example-generator][newman-example-generator]: Written in Node.JS, this utility takes advantage of Postman's [Newman Package](https://www.npmjs.com/package/newman) to run a collection and save the responses of all the requests as example responses.
 
-[newman-example-generator] ./newman-example-generator
+[newman-example-generator]: ./newman-example-generator
