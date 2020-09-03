@@ -1,0 +1,341 @@
+{
+	"info": {
+		"_postman_id": "220db953-6bb2-43ca-972b-5af56924babe",
+		"name": "Table Scapring to JSON",
+		"description": "#scraping #utility #TSA #travel",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "more things",
+			"item": [
+				{
+					"name": "setup",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						},
+						"description": "import a csv parsing library and save it to use later\n\n#setup #covid19 #cheeriojs <!-- postman.thing.whatever { look at this description I found } --> <!-- postman.choo  look at this description I found  -->"
+					},
+					"response": []
+				}
+			],
+			"description": "lorem ipsum blah blah blah\n\n<!-- postman.yeah.moo.caboo  \"object\": {\"something\": \"value of something\"}, \"another\": \"value of another\"  --> #covid19 #tutorial #webscraping",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "6b350b81-77ff-426d-8ee8-2da74962dd06",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "d56f7c84-2079-4ff1-9856-faaa0f524844",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Scrape and Visualize TSA Travel Table",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f07eea18-9b5a-4934-b72b-30d8108d9082",
+						"exec": [
+							"var updates = [];",
+							" const $ = cheerio.load(responseBody);",
+							" $(\"#block-mainpagecontent > article > div > div > table > tbody > tr\").each((index, element) => {",
+							"    const tds = $(element).find(\"td\");",
+							"    var entry = {",
+							"        dateData: $(tds[0]).text(),",
+							"        current: $(tds[1]).text(),",
+							"        lastyear: $(tds[2]).text()",
+							"    };",
+							"    updates.push(entry);",
+							" });",
+							"",
+							"//set the variable to be used in the next call to get the json",
+							"pm.environment.set(\"tsa\", JSON.stringify(updates));",
+							"",
+							"//visualize as a line graph",
+							"var template = `",
+							"",
+							"    <script src=\"https://www.amcharts.com/lib/4/core.js\"></script>",
+							"    <script src=\"https://www.amcharts.com/lib/4/charts.js\"></script>",
+							"    <div id=\"line-chart\"></div>",
+							"    <script>",
+							"        pm.getData( function (error, data) {",
+							"            am4core.ready(function() {",
+							"                var chart = am4core.create(\"line-chart\", am4charts.XYChart3D);",
+							"",
+							"                chart.data = data.response;",
+							"                chart.fontSize = '1em';",
+							"                chart.maskBullets = false;",
+							"                chart.paddingBottom = 0;",
+							"                chart.paddingLeft = 0;",
+							"                chart.paddingRight = 50;",
+							"                chart.paddingTop = 0;",
+							"                chart.zoomOutButton.disabled = true;",
+							"",
+							"                // Create axes",
+							"                var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());",
+							"                categoryAxis.dataFields.category = \"dateData\";",
+							"                categoryAxis.title.text = \"date\";",
+							"",
+							"                var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());",
+							"                valueAxis.renderer.opposite = true;",
+							"                valueAxis.renderer.grid.template.stroke = am4core.color('#000000');",
+							"                valueAxis.renderer.grid.template.strokeOpacity = 0.25;",
+							"                valueAxis.renderer.minGridDistance = 30;",
+							"                valueAxis.renderer.maxLabelPosition = 0.98;",
+							"                valueAxis.renderer.baseGrid.disabled = true;",
+							"                valueAxis.renderer.inside = false;",
+							"                valueAxis.renderer.labels.template.verticalCenter = 'bottom';",
+							"                valueAxis.renderer.labels.template.fill = am4core.color('#000');",
+							"                valueAxis.renderer.labels.template.padding(2, 2, 2, 2);",
+							"",
+							"                // create a series for the current values",
+							"                var series = chart.series.push(new am4charts.LineSeries());",
+							"                series.dataFields.valueY = \"current\";",
+							"                series.dataFields.categoryX = \"dateData\";",
+							"                series.name = \"This year\";",
+							"                series.tooltipText = \"{name}: [bold]{valueY}[/]\";",
+							"",
+							"                // create a  series for last year's values",
+							"                var series2 = chart.series.push(new am4charts.LineSeries());",
+							"                series2.dataFields.valueY = \"lastyear\";",
+							"                series2.dataFields.categoryX = \"dateData\";",
+							"                series2.name = \"Last Year\";",
+							"                series2.tooltipText = \"{name}: [bold]{valueY}[/]\";",
+							"",
+							"                //enable the tooltip",
+							"                series.tooltip.pointerOrientation = \"vertical\";",
+							"",
+							"                //add a legend",
+							"                chart.legend = new am4charts.Legend();",
+							"",
+							"                chart.cursor = new am4charts.XYCursor();",
+							"            });",
+							"        });",
+							"    </script>",
+							" `;",
+							"",
+							" //using the whole object will break it, so limit to 70 days.",
+							"var limitedEntries = updates.slice(1,70)",
+							" pm.visualizer.set(template, {",
+							"    response: limitedEntries",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://www.tsa.gov/coronavirus/passenger-throughput",
+					"protocol": "https",
+					"host": [
+						"www",
+						"tsa",
+						"gov"
+					],
+					"path": [
+						"coronavirus",
+						"passenger-throughput"
+					]
+				},
+				"description": "#amcharts #visualization"
+			},
+			"response": []
+		},
+		{
+			"name": "See the TSA data as JSON",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "110267ff-ab29-4b90-bdf2-801e95e21a7f",
+						"exec": [
+							"// var updates = [];",
+							"//  const $ = cheerio.load(responseBody);",
+							"//  $(\"#block-mainpagecontent > article > div > div > table > tbody > tr\").each((index, element) => {",
+							"//     const tds = $(element).find(\"td\");",
+							"//     const dateData = $(tds[0]).text();",
+							"//     const current = $(tds[1]).text();",
+							"//     const lastyear = $(tds[2]).text();",
+							"//     var entry = {",
+							"//         dateData: dateData,",
+							"//         current: current,",
+							"//         lastyear: lastyear",
+							"//     };",
+							"//     updates.push(entry);",
+							"//     // console.log(dateData);",
+							"//  });",
+							"",
+							"// console.log(updates);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{{tsa}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://postman-echo.com/put",
+					"protocol": "https",
+					"host": [
+						"postman-echo",
+						"com"
+					],
+					"path": [
+						"put"
+					]
+				},
+				"description": "#htmlToJson #postmanecho"
+			},
+			"response": []
+		},
+		{
+			"name": "Scrape HTML and return as JSON",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f5c81632-9fd5-4534-b304-53ada0311a7c",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "011ab0af-7b0f-4dcf-b554-4f904b520078",
+						"exec": [
+							"//send a request to get the tsa html ",
+							"pm.sendRequest('https://www.tsa.gov/coronavirus/passenger-throughput', function (err, res) {",
+							"    if (err) {",
+							"        console.log(err);",
+							"    } else {",
+							"        //stream and save the returned html to use later",
+							"        let resBody = new Buffer.from(res.stream).toString()",
+							"        pm.environment.set(\"tsa_html\", resBody);",
+							"    }",
+							"});",
+							"//retrieve the html that we saved",
+							"var html = pm.environment.get(\"tsa_html\");",
+							"",
+							"//create an array for our data rows",
+							"var updates = [];",
+							"",
+							"//load html into cheerio, then get the table via selector",
+							" const $ = cheerio.load(html);",
+							" $(\"#block-mainpagecontent > article > div > div > table > tbody > tr\").each((index, element) => {",
+							"     //build up our js object / json nodes by parsing each row of the table",
+							"    const tds = $(element).find(\"td\");",
+							"    const dateData = $(tds[0]).text();",
+							"    const current = $(tds[1]).text();",
+							"    const lastyear = $(tds[2]).text();",
+							"    var entry = {",
+							"        dateData: dateData,",
+							"        current: current,",
+							"        lastyear: lastyear",
+							"    };",
+							"    //add one table row/json node",
+							"    updates.push(entry);",
+							" });",
+							"//save it to the env - this is what will be returned via the echo api.",
+							"pm.environment.set(\"tsa_json\", JSON.stringify(updates));",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{{tsa_json}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://postman-echo.com/put",
+					"protocol": "https",
+					"host": [
+						"postman-echo",
+						"com"
+					],
+					"path": [
+						"put"
+					]
+				},
+				"description": "Here, we will send an async request to get the TSA data, scrape it into a usable JSON structure using cheerio, and return our json via the postman echo api.\n\n#postmanecho #htmlToJson"
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "9eb3e763-b687-4982-848c-4732504d331b",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "f4f2f171-6baf-486a-b8c4-347d8fbebe75",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "1fd81f9d-a2b6-4789-a516-2d7dd1210da4",
+			"key": "postmanMetaTags",
+			"value": "cheeriojs, htmlscraping, developertools, restapi"
+		}
+	],
+	"protocolProfileBehavior": {}
+}
