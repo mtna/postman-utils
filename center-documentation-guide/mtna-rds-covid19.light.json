@@ -1,0 +1,10 @@
+{
+    "custodian": "This API is maintained and hosted by Metadata Technology North America (MTNA) is a U.S. based small business that provides high level expertise around the technical management of statistical and scientific data.",
+    "provenance":"Data is collected from official and popular data sources from around the world.",
+    "coverage": {
+        "topics": "covid19, testing, cases, labout force",
+        "geography": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+        "time": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+    },
+    "resources":"Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+}

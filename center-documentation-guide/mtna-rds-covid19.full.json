@@ -1,0 +1,84 @@
+{
+    "custodian": {
+        "name": "Metadata Technology North America Inc.",
+        "description": "Metadata Technology North America (MTNA) is a U.S. based small business that provides high level expertise around the technical management of statistical and scientific data.",
+        "homepage": "https://www.mtna.us",
+        "type": "organization",
+        "contact": [
+            {
+                "name": "General Information",
+                "email": "mtna@mtna.us",
+                "type": "primary"
+            },
+            {
+                "name": "Technical Support",
+                "homepage": "https://mtnaus.atlassian.net/wiki/spaces/RDSHD/overview",
+                "email": "rds@mtna.us",
+                "type": "support"
+            }
+        ]
+    },
+    "provenance": {
+        "description": "Data is collected from official and popular data sources from around the world.",
+        "curation": "Various tools and techniques are typically used to enhance data quality and capture metadata for publication oin our Rich Data Services platform.",
+        "sources": [
+            {
+                "name": "Johns Hopkins University CCSE",
+                "description": "COVID-19 Data Repository by the Center for Systems Science and Engineering (CSSE) at Johns Hopkins University",
+                "homepage": "https://github.com/CSSEGISandData/COVID-19",
+                "update": "Daily",
+                "curation": "Pythons scripts are used to harvest the COVID-19 daily reports CSV files, reorganize in multiple datasets (global, national, subnational), address geo-entities spelling variations, create new categorical variables using standard codes, and perform other adjustements."
+            },
+            {
+                "name": "Google COVID-19 Community Mobility Reports",
+                "homepage": "https://www.google.com/covid19/mobility/",
+                "update": "Varies, every few days",
+                "curation": "Pythons scripts are used to harvest the CSV files, reorganize in multiple datasets, and perform other adjustements."
+            },
+            {
+                "name": "Government of Canada Outbreak Update",
+                "homepage": "https://www.canada.ca/en/public-health/services/diseases/2019-novel-coronavirus-infection.html",
+                "update": "Daily",
+                "curation": "Data product is created through cleaning and simple transformations applied to the CSV files"
+            }
+        ]
+    },
+    "coverage": {
+        "descripiton": "",
+        "topics": {
+            "description": "",
+            "#demography": [
+                "sex",
+                "gender",
+                "age",
+                "race, ethnicity"
+            ],
+            "#employment": ["labour-force"],
+            "#covid19": [
+                "cases",
+                "cases-confirmed",
+                "cases-recovered",
+                "deaths",
+                "testing"
+            ]
+        },
+        "geography": {
+            "description": "",
+            "iso3166-1": [
+                "ca",
+                "us"
+            ],
+            "iso3166-2:ca": "*",
+            "iso3166-2:us": "*",
+            "fips-5-2": "*",
+            "fips-6-4": "*"
+            
+        },
+        "time": {
+            "description": "",
+            "iso-8601": ["2019/.."]
+            }
+    },
+    "resources": [
+    ]
+}
