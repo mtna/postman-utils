@@ -21,12 +21,13 @@ comment_count = 0
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('infile', help="Postman API JSON file")
+    parser.add_argument('-r', '--report', action="store_true", help="Flag to output a QA report.")
     parser.add_argument('-o', '--out', help="Output directory, defaults to current working directory.", default=os.getcwd())
 
     args = parser.parse_args()
-    _parse(args.infile, args.out)
+    _parse(args.infile, args.out, args.report)
     
-def _parse(infile, out):
+def _parse(infile, out, report):
     print("Parsing API JSON file [" + os.path.basename(infile) + "].")
     with open(infile) as collection_file:
         collection_json = json.load(collection_file)
@@ -43,13 +44,14 @@ def _parse(infile, out):
     parsed_dict = {}
     parsed_dict["properties"] = properties.get_properties()
     
+    print("COMPLETE")
     parsed_file = open(out + "/" + Path(infile).stem + "_parsed.json", 'w')
     parsed_file.write(json.dumps(parsed_dict, indent=4))
-    report = open(out + "/" + Path(infile).stem + "_report.json", 'w')
-    report.write(json.dumps(properties.get_report(), indent=4))
-    print("COMPLETE")
     print("Properties output as [" + Path(infile).stem + "_parsed.json].")
-    print("QA report output as [" + Path(infile).stem + "_report.json].")
+    if report:
+        report = open(out + "/" + Path(infile).stem + "_report.json", 'w')
+        report.write(json.dumps(properties.get_report(), indent=4))
+        print("QA report output as [" + Path(infile).stem + "_report.json].")
     
 def _convert_tags_to_property(tags):
     tag_dict = {}
