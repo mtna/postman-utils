@@ -6,7 +6,6 @@ Created on Tue Aug 11 10:55:06 2020
 @author: seanlucas
 """
 
-from functools import reduce
 from pathlib import Path
 import argparse
 import json
@@ -14,7 +13,6 @@ import os
 import re
 
 from properties import Properties
-from tag import Tag
 
 #index of the current description being parsed for properties
 desc_i = 0
@@ -32,17 +30,36 @@ def _parse(infile, out):
     print("Parsing API JSON file [" + os.path.basename(infile) + "].")
     with open(infile) as collection_file:
         collection_json = json.load(collection_file)
-    tagword_to_object = {}
-    all_properties = []
-    _parse_collection(all_properties, tagword_to_object, collection_json)
+        
+    tags = []
+    property_list = []
+    for description in _get_descriptions(collection_json):
+        _parse_description(description, property_list, tags)
     
+    tag_property = _convert_tags_to_property(tags)
+    property_list.append(tag_property)
+    properties = Properties(property_list)
+        
+    parsed_dict = {}
+    parsed_dict["properties"] = properties.get_properties()
+    
+    parsed_file = open(out + "/" + Path(infile).stem + "_parsed.json", 'w')
+    parsed_file.write(json.dumps(parsed_dict, indent=4))
+    report = open(out + "/" + Path(infile).stem + "_report.json", 'w')
+    report.write(json.dumps(properties.get_report(), indent=4))
+    print("COMPLETE")
+    print("Properties output as [" + Path(infile).stem + "_parsed.json].")
+    print("QA report output as [" + Path(infile).stem + "_report.json].")
+    
+def _convert_tags_to_property(tags):
     tag_dict = {}
-    if len(tagword_to_object.items()) > 0:
+    if len(tags) > 0:
         tag_dict["coverage"] = {}
         tag_dict["coverage"]["topics"] = {}
-    for tag_word in tagword_to_object.keys():
+        
+    for tag in tags:
         topics = tag_dict["coverage"]["topics"]
-        tag_subjects = tag_word.split(':')
+        tag_subjects = re.split('\.|:', tag)
         
         sub_topics = []
         if topics.get(tag_subjects[0]) is not None:
@@ -53,41 +70,25 @@ def _parse(infile, out):
                 sub_topics.append(tag_subject)
         topics[tag_subjects[0]] = sub_topics
     
-    all_properties.append(tag_dict)
-    properties = _merge_properties(all_properties)
-    prop = Properties(properties)
-        
-    parsed_dict = {}
-    parsed_dict["properties"] = prop.get_properties()
-    
-    tag_file = open(out + "/" + Path(infile).stem + "_parsed.json", 'w')
-    tag_file.write(json.dumps(parsed_dict, indent=4))
+    return tag_dict
+                
+def _get_descriptions(json_str, descriptions=[]): 
+    for k, v in json_str.items():
+        if k == "description":
+            descriptions.append(v)
+        if isinstance(v, dict): 
+            _get_descriptions(v, descriptions)
+        elif isinstance(v, list):
+            for v1 in v:
+                if isinstance(v1, dict): 
+                    _get_descriptions(v1, descriptions)
+    return descriptions
 
-def _parse_collection(all_properties, tagword_to_object, collection_json):
-    if collection_json.get("info") is not None:
-        collection_info = collection_json["info"]
-        if collection_info.get("description") is not None:
-            _parse_description(all_properties, tagword_to_object, collection_info, "Collection")
-        if collection_json.get("item") is not None:
-            for item in collection_json["item"]:
-                _parse_item(all_properties, tagword_to_object, item)
-    
-def _parse_item(all_properties, tagword_to_object, item):
-    if item.get("item") is not None:
-        if item.get("description") is not None:
-            _parse_description(all_properties, tagword_to_object, item, "Folder")
-        for sub_item in item["item"]:
-            _parse_item(all_properties, tagword_to_object, sub_item)
-    elif item.get("request") is not None:
-        request = item["request"]
-        if request.get("description") is not None:
-            _parse_description(all_properties, tagword_to_object, request, "Request", name=item["name"], is_request=True)
-
-def _parse_description(all_properties, tagword_to_object, item, item_type, name=None, is_request=False):
+def _parse_description(description, all_properties, tags):
     global desc_i
     desc_i = 0
     
-    words = item["description"].split()
+    words = description.split()
     word_count = len(words)
     while desc_i < word_count:
         word = words[desc_i].strip('\"')
@@ -95,25 +96,11 @@ def _parse_description(all_properties, tagword_to_object, item, item_type, name=
         if word.startswith("<!--"):
              _build_comment(all_properties, words)
         elif word.startswith('#') and not word.startswith('##'):
-            _build_tag(tagword_to_object, item, is_request, name, item_type, word)
+            print("Tag [" + word + "] found.")
+            tags.append(word)
            
         desc_i += 1
 
-def _build_tag(tagword_to_object, item, is_request, name, item_type, tag_word):
-    print("Tag [" + tag_word + "] found, parsing.")
-    resource = {}
-    resource["name"] = name if name != None else item["name"]
-    resource["resourceType"] = item_type
-    
-    if is_request:
-        resource["requestMethod"] = item["method"]
-        
-    if tagword_to_object.get(tag_word) is None:
-        tagword_to_object[tag_word] = Tag(tag_word)
-    tag = tagword_to_object[tag_word];
-    
-    tag.add_resource(resource)
-        
 def _build_comment(all_properties, words):
     global desc_i
     
@@ -133,7 +120,9 @@ def _build_comment(all_properties, words):
     if _will_parse(words):
         global comment_count
         comment_count += 1
-        print("Postman comment [" + str(comment_count) + "] found, parsing.")
+        #TODO could print out the path to the comment
+        print("Postman comment [" + str(comment_count) + "] found, parsing properties.")
+        
         property_tree = words[desc_i]
         properties = re.split('\.|:', property_tree)
         desc_i += 1
@@ -181,26 +170,5 @@ def _get_content(words):
         #removing {} as this is not an object
         return content[1:-2].strip()
 
-def _merge_properties(all_properties):
-    def _merge(props_a, props_b, path=None):
-        if path is None: 
-            path = []
-        for key in props_b:
-            if key in props_a:
-                if isinstance(props_a[key], dict) and isinstance(props_b[key], dict):
-                    _merge(props_a[key], props_b[key], path + [str(key)])
-                elif props_a[key] == props_b[key]:
-                    pass
-                else:
-                    props_a[key] = [props_a[key], props_b[key]]
-                    print('WARNING: conflict at property [%s' % '.'.join(path + [str(key)]) + "], creating list of values.")
-            else:
-                props_a[key] = props_b[key]
-        return props_a
-    
-    merged_properties = reduce(_merge, all_properties);
-    
-    return merged_properties
-        
 if __name__ == '__main__':
     main()

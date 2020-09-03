@@ -22,7 +22,7 @@
 					"response": []
 				}
 			],
-			"description": "lorem ipsum blah blah blah\n\n<!-- postman.yeah.moo.caboo  \"object\": {\"something\": \"value of something\"}, \"another\": \"value of another\"  --> #covid19 #tutorial #webscraping",
+			"description": "lorem ipsum blah blah blah\n\n<!-- postman.yeah.moo.caboo  \"object\": {\"something\": \"value of something\"}, \"another\": \"value of another\"  --> #covid19.virus #tutorial #webscraping",
 			"event": [
 				{
 					"listen": "prerequest",

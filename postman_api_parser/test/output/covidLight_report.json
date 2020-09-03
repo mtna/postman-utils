@@ -1,0 +1,21 @@
+{
+    "custodian": {
+        "completeness": 1
+    },
+    "coverage": {
+        "completeness": 2,
+        "topic_count": 0,
+        "subtopic_count": 0
+    },
+    "provenance": {
+        "completeness": 1,
+        "source_count": 0
+    },
+    "profile": {
+        "completeness": 0
+    },
+    "resources": {
+        "completeness": 1,
+        "resource_count": 0
+    }
+}

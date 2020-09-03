@@ -1,0 +1,21 @@
+{
+    "properties": {
+        "coverage": {
+            "topics": {
+                "#scraping": [],
+                "#utility": [],
+                "#TSA": [],
+                "#travel": [],
+                "#setup": [],
+                "#covid19": [],
+                "#cheeriojs": [],
+                "#tutorial": [],
+                "#webscraping": [],
+                "#amcharts": [],
+                "#visualization": [],
+                "#htmlToJson": [],
+                "#postmanecho": []
+            }
+        }
+    }
+}

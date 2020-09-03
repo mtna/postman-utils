@@ -1,0 +1,37 @@
+{
+    "properties": {
+        "thing": {
+            "whatever": "look at this description I found"
+        },
+        "choo": "look at this description I found",
+        "yeah": {
+            "moo": {
+                "caboo": {
+                    "object": {
+                        "something": "value of something"
+                    },
+                    "another": "value of another"
+                }
+            }
+        },
+        "coverage": {
+            "topics": {
+                "#scraping": [],
+                "#utility": [],
+                "#TSA": [],
+                "#travel": [],
+                "#setup": [],
+                "#covid19": [
+                    "virus"
+                ],
+                "#cheeriojs": [],
+                "#tutorial": [],
+                "#webscraping": [],
+                "#amcharts": [],
+                "#visualization": [],
+                "#htmlToJson": [],
+                "#postmanecho": []
+            }
+        }
+    }
+}
