@@ -19,3 +19,4 @@ To use the generator:
 - Run the generator on your Postman collection JSON file, `node example-generator.js <mycollection>.json`
 - This will generate the file `<mycollection>-examples.json`
 - The generated file can be used to publish the collection for the first time or to update an already published collection through the Postman API. 
+- See the resources directory for a before an after example, `collection.json` is a simple collection with several requests and no save examples while `collection-examples.json` is the same collection after being run through the newman-example-generator. This collection should have a saved example for each request. 
