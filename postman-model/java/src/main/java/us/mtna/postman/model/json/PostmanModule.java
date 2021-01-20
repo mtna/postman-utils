@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
 import us.mtna.postman.model.Host;
+import us.mtna.postman.model.Item;
 import us.mtna.postman.model.Path;
 import us.mtna.postman.model.Url;
 
@@ -22,5 +23,6 @@ public class PostmanModule extends SimpleModule {
 		this.addDeserializer(Url.class, new UrlDeserializer());
 		this.addDeserializer(Host.class, new HostDeserializer());
 		this.addDeserializer(Path.class, new PathDeserializer());
+		this.addDeserializer(Item.class, new ItemDeserializer());
 	}
 }
