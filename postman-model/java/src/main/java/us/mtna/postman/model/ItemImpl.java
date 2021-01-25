@@ -22,7 +22,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
  * 
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({ "id", "name", "description", "variable", "event", "request", "response",
+@JsonPropertyOrder({ "id", "name", "description", "variable", "event", "request", "response", "_postman_id",
 		"protocolProfileBehavior" })
 public class ItemImpl implements Item {
 
@@ -43,8 +43,8 @@ public class ItemImpl implements Item {
 	/**
 	 * Description
 	 * <p>
-	 * A Description can be a raw text, or be an object, which holds the
-	 * description along with its format.
+	 * A Description can be a raw text, or be an object, which holds the description
+	 * along with its format.
 	 * 
 	 */
 	@JsonProperty("description")
@@ -53,10 +53,9 @@ public class ItemImpl implements Item {
 	/**
 	 * Variable List
 	 * <p>
-	 * Collection variables allow you to define a set of variables, that are a
-	 * *part of the collection*, as opposed to environments, which are separate
-	 * entities. *Note: Collection variables must not contain any sensitive
-	 * information.*
+	 * Collection variables allow you to define a set of variables, that are a *part
+	 * of the collection*, as opposed to environments, which are separate entities.
+	 * *Note: Collection variables must not contain any sensitive information.*
 	 * 
 	 */
 	@JsonProperty("variable")
@@ -65,9 +64,9 @@ public class ItemImpl implements Item {
 	/**
 	 * Event List
 	 * <p>
-	 * Postman allows you to configure scripts to run when specific events
-	 * occur. These scripts are stored here, and can be referenced in the
-	 * collection by their ID.
+	 * Postman allows you to configure scripts to run when specific events occur.
+	 * These scripts are stored here, and can be referenced in the collection by
+	 * their ID.
 	 * 
 	 */
 	@JsonProperty("event")
@@ -76,8 +75,8 @@ public class ItemImpl implements Item {
 	/**
 	 * Request
 	 * <p>
-	 * A request represents an HTTP request. If a string, the string is assumed
-	 * to be the request URL and the method is assumed to be 'GET'. (Required)
+	 * A request represents an HTTP request. If a string, the string is assumed to
+	 * be the request URL and the method is assumed to be 'GET'. (Required)
 	 * 
 	 */
 	@JsonProperty("request")
@@ -91,11 +90,13 @@ public class ItemImpl implements Item {
 	 */
 	@JsonProperty("response")
 	private List<Response> response = new ArrayList<Response>();
+	@JsonProperty("_postman_id")
+	@JsonPropertyDescription("An undocumented postman ID that seems to be treated with more authority than the regular ID in some circumstances (such as published docs)")
+	private String postmanId;
 	/**
 	 * Protocol Profile Behavior
 	 * <p>
-	 * Set of configurations used to alter the usual behavior of sending the
-	 * request
+	 * Set of configurations used to alter the usual behavior of sending the request
 	 * 
 	 */
 	@JsonProperty("protocolProfileBehavior")
@@ -143,8 +144,8 @@ public class ItemImpl implements Item {
 	/**
 	 * Description
 	 * <p>
-	 * A Description can be a raw text, or be an object, which holds the
-	 * description along with its format.
+	 * A Description can be a raw text, or be an object, which holds the description
+	 * along with its format.
 	 * 
 	 */
 	@JsonProperty("description")
@@ -155,8 +156,8 @@ public class ItemImpl implements Item {
 	/**
 	 * Description
 	 * <p>
-	 * A Description can be a raw text, or be an object, which holds the
-	 * description along with its format.
+	 * A Description can be a raw text, or be an object, which holds the description
+	 * along with its format.
 	 * 
 	 */
 	@JsonProperty("description")
@@ -167,10 +168,9 @@ public class ItemImpl implements Item {
 	/**
 	 * Variable List
 	 * <p>
-	 * Collection variables allow you to define a set of variables, that are a
-	 * *part of the collection*, as opposed to environments, which are separate
-	 * entities. *Note: Collection variables must not contain any sensitive
-	 * information.*
+	 * Collection variables allow you to define a set of variables, that are a *part
+	 * of the collection*, as opposed to environments, which are separate entities.
+	 * *Note: Collection variables must not contain any sensitive information.*
 	 * 
 	 */
 	@JsonProperty("variable")
@@ -181,10 +181,9 @@ public class ItemImpl implements Item {
 	/**
 	 * Variable List
 	 * <p>
-	 * Collection variables allow you to define a set of variables, that are a
-	 * *part of the collection*, as opposed to environments, which are separate
-	 * entities. *Note: Collection variables must not contain any sensitive
-	 * information.*
+	 * Collection variables allow you to define a set of variables, that are a *part
+	 * of the collection*, as opposed to environments, which are separate entities.
+	 * *Note: Collection variables must not contain any sensitive information.*
 	 * 
 	 */
 	@JsonProperty("variable")
@@ -195,9 +194,9 @@ public class ItemImpl implements Item {
 	/**
 	 * Event List
 	 * <p>
-	 * Postman allows you to configure scripts to run when specific events
-	 * occur. These scripts are stored here, and can be referenced in the
-	 * collection by their ID.
+	 * Postman allows you to configure scripts to run when specific events occur.
+	 * These scripts are stored here, and can be referenced in the collection by
+	 * their ID.
 	 * 
 	 */
 	@JsonProperty("event")
@@ -208,9 +207,9 @@ public class ItemImpl implements Item {
 	/**
 	 * Event List
 	 * <p>
-	 * Postman allows you to configure scripts to run when specific events
-	 * occur. These scripts are stored here, and can be referenced in the
-	 * collection by their ID.
+	 * Postman allows you to configure scripts to run when specific events occur.
+	 * These scripts are stored here, and can be referenced in the collection by
+	 * their ID.
 	 * 
 	 */
 	@JsonProperty("event")
@@ -221,8 +220,8 @@ public class ItemImpl implements Item {
 	/**
 	 * Request
 	 * <p>
-	 * A request represents an HTTP request. If a string, the string is assumed
-	 * to be the request URL and the method is assumed to be 'GET'. (Required)
+	 * A request represents an HTTP request. If a string, the string is assumed to
+	 * be the request URL and the method is assumed to be 'GET'. (Required)
 	 * 
 	 */
 	@JsonProperty("request")
@@ -233,8 +232,8 @@ public class ItemImpl implements Item {
 	/**
 	 * Request
 	 * <p>
-	 * A request represents an HTTP request. If a string, the string is assumed
-	 * to be the request URL and the method is assumed to be 'GET'. (Required)
+	 * A request represents an HTTP request. If a string, the string is assumed to
+	 * be the request URL and the method is assumed to be 'GET'. (Required)
 	 * 
 	 */
 	@JsonProperty("request")
@@ -264,11 +263,20 @@ public class ItemImpl implements Item {
 		this.response = response;
 	}
 
+	@JsonProperty("_postman_id")
+	public String getPostmanId() {
+		return postmanId;
+	}
+
+	@JsonProperty("_postman_id")
+	public void setPostmanId(String postmanId) {
+		this.postmanId = postmanId;
+	}
+
 	/**
 	 * Protocol Profile Behavior
 	 * <p>
-	 * Set of configurations used to alter the usual behavior of sending the
-	 * request
+	 * Set of configurations used to alter the usual behavior of sending the request
 	 * 
 	 */
 	@JsonProperty("protocolProfileBehavior")
@@ -279,8 +287,7 @@ public class ItemImpl implements Item {
 	/**
 	 * Protocol Profile Behavior
 	 * <p>
-	 * Set of configurations used to alter the usual behavior of sending the
-	 * request
+	 * Set of configurations used to alter the usual behavior of sending the request
 	 * 
 	 */
 	@JsonProperty("protocolProfileBehavior")

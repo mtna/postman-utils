@@ -20,12 +20,13 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
  * 
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({ "id", "originalRequest", "responseTime", "timings", "header", "cookie", "body", "status", "code" })
+@JsonPropertyOrder({ "id", "originalRequest", "responseTime", "timings", "_postman_previewlanguage", "header", "cookie", "body", "status",
+		"code" })
 public class Response {
 
 	/**
-	 * A unique, user defined identifier that can be used to refer to this
-	 * response from requests.
+	 * A unique, user defined identifier that can be used to refer to this response
+	 * from requests.
 	 * 
 	 */
 	@JsonProperty("id")
@@ -34,8 +35,8 @@ public class Response {
 	/**
 	 * Request
 	 * <p>
-	 * A request represents an HTTP request. If a string, the string is assumed
-	 * to be the request URL and the method is assumed to be 'GET'.
+	 * A request represents an HTTP request. If a string, the string is assumed to
+	 * be the request URL and the method is assumed to be 'GET'.
 	 * 
 	 */
 	@JsonProperty("originalRequest")
@@ -45,8 +46,7 @@ public class Response {
 	 * ResponseTime
 	 * <p>
 	 * The time taken by the request to complete. If a number, the unit is
-	 * milliseconds. If the response is manually created, this can be set to
-	 * `null`.
+	 * milliseconds. If the response is manually created, this can be set to `null`.
 	 * 
 	 */
 	@JsonProperty("responseTime")
@@ -61,11 +61,19 @@ public class Response {
 	@JsonProperty("timings")
 	@JsonPropertyDescription("Set of timing information related to request and response in milliseconds")
 	private Timings timings;
+	
+	/**
+	 * This was not in the schema. 
+	 */
+	@JsonProperty("_postman_previewlanguage")
+	@JsonPropertyDescription("The language the saved example response will be displayed in.")
+	private String postmanPreviewLanguage;
+	
 	/**
 	 * Headers
 	 * <p>
-	 * No HTTP request is complete without its headers, and the same is true for
-	 * a Postman request. This field is an array containing all the headers.
+	 * No HTTP request is complete without its headers, and the same is true for a
+	 * Postman request. This field is an array containing all the headers.
 	 * 
 	 */
 	@JsonProperty("header")
@@ -88,6 +96,13 @@ public class Response {
 	@JsonPropertyDescription("The response status, e.g: '200 OK'")
 	private String status;
 	/**
+	 * The response status, e.g: '200 OK'
+	 * 
+	 */
+	@JsonProperty("name")
+	@JsonPropertyDescription("The response name")
+	private String name;
+	/**
 	 * The numerical response code, example: 200, 201, 404, etc.
 	 * 
 	 */
@@ -98,8 +113,8 @@ public class Response {
 	private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
 	/**
-	 * A unique, user defined identifier that can be used to refer to this
-	 * response from requests.
+	 * A unique, user defined identifier that can be used to refer to this response
+	 * from requests.
 	 * 
 	 */
 	@JsonProperty("id")
@@ -108,8 +123,8 @@ public class Response {
 	}
 
 	/**
-	 * A unique, user defined identifier that can be used to refer to this
-	 * response from requests.
+	 * A unique, user defined identifier that can be used to refer to this response
+	 * from requests.
 	 * 
 	 */
 	@JsonProperty("id")
@@ -120,8 +135,8 @@ public class Response {
 	/**
 	 * Request
 	 * <p>
-	 * A request represents an HTTP request. If a string, the string is assumed
-	 * to be the request URL and the method is assumed to be 'GET'.
+	 * A request represents an HTTP request. If a string, the string is assumed to
+	 * be the request URL and the method is assumed to be 'GET'.
 	 * 
 	 */
 	@JsonProperty("originalRequest")
@@ -132,8 +147,8 @@ public class Response {
 	/**
 	 * Request
 	 * <p>
-	 * A request represents an HTTP request. If a string, the string is assumed
-	 * to be the request URL and the method is assumed to be 'GET'.
+	 * A request represents an HTTP request. If a string, the string is assumed to
+	 * be the request URL and the method is assumed to be 'GET'.
 	 * 
 	 */
 	@JsonProperty("originalRequest")
@@ -145,8 +160,7 @@ public class Response {
 	 * ResponseTime
 	 * <p>
 	 * The time taken by the request to complete. If a number, the unit is
-	 * milliseconds. If the response is manually created, this can be set to
-	 * `null`.
+	 * milliseconds. If the response is manually created, this can be set to `null`.
 	 * 
 	 */
 	@JsonProperty("responseTime")
@@ -158,8 +172,7 @@ public class Response {
 	 * ResponseTime
 	 * <p>
 	 * The time taken by the request to complete. If a number, the unit is
-	 * milliseconds. If the response is manually created, this can be set to
-	 * `null`.
+	 * milliseconds. If the response is manually created, this can be set to `null`.
 	 * 
 	 */
 	@JsonProperty("responseTime")
@@ -189,11 +202,21 @@ public class Response {
 		this.timings = timings;
 	}
 
+	@JsonProperty("_postman_previewlanguage")
+	public String getPostmanPreviewLanguage() {
+		return postmanPreviewLanguage;
+	}
+	
+	@JsonProperty("_postman_previewlanguage")
+	public void setPostmanPreviewLanguage(String postmanPreviewLanguage) {
+		this.postmanPreviewLanguage = postmanPreviewLanguage;
+	}
+	
 	/**
 	 * Headers
 	 * <p>
-	 * No HTTP request is complete without its headers, and the same is true for
-	 * a Postman request. This field is an array containing all the headers.
+	 * No HTTP request is complete without its headers, and the same is true for a
+	 * Postman request. This field is an array containing all the headers.
 	 * 
 	 */
 	@JsonProperty("header")
@@ -204,8 +227,8 @@ public class Response {
 	/**
 	 * Headers
 	 * <p>
-	 * No HTTP request is complete without its headers, and the same is true for
-	 * a Postman request. This field is an array containing all the headers.
+	 * No HTTP request is complete without its headers, and the same is true for a
+	 * Postman request. This field is an array containing all the headers.
 	 * 
 	 */
 	@JsonProperty("header")
@@ -257,6 +280,16 @@ public class Response {
 	@JsonProperty("status")
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	@JsonProperty("name")
+	public String getName() {
+		return name;
+	}
+
+	@JsonProperty("name")
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	/**
