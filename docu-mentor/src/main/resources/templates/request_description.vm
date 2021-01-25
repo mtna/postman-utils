@@ -1,0 +1,21 @@
+#if($model.getRelatedRequests())
+**Related Requests**
+
+This model is used in the following requests.
+
+|Request|Location|
+|--- |--- |
+#foreach($request in $model.getRelatedRequests())
+|[$request.getName()](#[[#]]#$request.getId())|$request.getLocation()|
+#end
+
+#end
+**Model**
+
+|Property|Description|Type|
+|--- |--- |--- |
+#set ($map = $model.getModel() )
+#foreach ($mapEntry in $map.entrySet())
+#set($value = $mapEntry.key)
+|$mapEntry.key| |$model.getType($value)|
+#end

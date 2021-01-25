@@ -1,0 +1,21 @@
+## Overview 
+
+The API Models folder contains an echo API request for each model that is used throughout the collection. Each request seeks to provide an example of the model (through the request body) as well as documentation in the requests description. The documentation is structured as follows.
+
+**Related Requests**
+
+The related requests section will have links to the requests where the model is used in a table format such as
+
+|Request|Location|
+|--- |--- |
+|Get Request|Request / Response|
+
+
+**Model**
+
+The model section is meant to provide descriptions of the properties of each model along with links to any models that may be used.
+
+|Property|Description|Type|
+|--- |--- |--- |
+|name|The name of the object|string|
+|address|The address of the object|Address Model(link)|

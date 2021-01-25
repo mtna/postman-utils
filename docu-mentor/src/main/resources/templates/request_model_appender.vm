@@ -1,0 +1,10 @@
+
+**Related Models**
+
+The following models are used in this request. View the model documentation to learn more about what it is and how it fits into this and other requests
+
+|Model|Location|
+|--- |--- |
+#foreach($model in $relatedModels)
+|[$model.getModelName()](#[[#]]#$model.getModelId())|$model.getLocation()|
+#end
