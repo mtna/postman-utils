@@ -227,6 +227,8 @@ public class CollectionModelGenerator {
 				}
 			}
 
+			logger.debug("Checking for models for request [" + requestItem.getName() + "]");
+
 			// process request body
 			Body body = null;
 			if ((body = getBody(requestItem)) != null) {
@@ -249,7 +251,23 @@ public class CollectionModelGenerator {
 							new RelatedRequest(requestItem.getId(), requestItem.getName(), ModelLocation.REQUEST));
 					models.put(model.getModelKey(), model);
 				} catch (Exception e) {
-					logger.error("Could not read request body for [" + requestItem.getName() + "], skipping.");
+					try {
+						// check for array.
+						@SuppressWarnings("unchecked")
+						TreeMap<String, Object>[] maps = (TreeMap<String, Object>[]) mapper
+								.readValue(body.getRaw(), TreeMap[].class);
+						for (TreeMap<String, Object> map : maps) {
+							CollectionModel model = new CollectionModel(body.getRaw(), map);
+							if (models.containsKey(model.getModelKey())) {
+								model = models.get(model.getModelKey());
+							}
+							model.addRelatedRequest(new RelatedRequest(requestItem.getId(), requestItem.getName(),
+									ModelLocation.RESPONSE));
+							models.put(model.getModelKey(), model);
+						}
+					} catch (Exception e2) {
+						logger.error("Could not read request body for [" + requestItem.getName() + "], skipping.");
+					}
 				}
 			}
 
@@ -267,7 +285,23 @@ public class CollectionModelGenerator {
 							new RelatedRequest(requestItem.getId(), requestItem.getName(), ModelLocation.RESPONSE));
 					models.put(model.getModelKey(), model);
 				} catch (Exception e) {
-					logger.error("Could not read response body for [" + requestItem.getName() + "], skipping.");
+					try {
+						// check for array.
+						@SuppressWarnings("unchecked")
+						TreeMap<String, Object>[] maps = (TreeMap<String, Object>[]) mapper
+								.readValue(response.getBody(), TreeMap[].class);
+						for (TreeMap<String, Object> map : maps) {
+							CollectionModel model = new CollectionModel(response.getBody(), map);
+							if (models.containsKey(model.getModelKey())) {
+								model = models.get(model.getModelKey());
+							}
+							model.addRelatedRequest(new RelatedRequest(requestItem.getId(), requestItem.getName(),
+									ModelLocation.RESPONSE));
+							models.put(model.getModelKey(), model);
+						}
+					} catch (Exception e2) {
+						logger.error("Could not read response body for [" + requestItem.getName() + "], skipping.");
+					}
 				}
 			}
 		}
@@ -308,7 +342,10 @@ public class CollectionModelGenerator {
 		List<Response> jsonResponses = new ArrayList<>();
 		if (responses != null) {
 			for (Response r : responses) {
-				if (r.getHeader() != null) {
+				String preview = r.getPostmanPreviewLanguage();
+				if ("json".equalsIgnoreCase(preview)) {
+					jsonResponses.add(r);
+				} else if (r.getHeader() != null) {
 					for (Header header : r.getHeader()) {
 						if ("content-type".equalsIgnoreCase(header.getKey())
 								&& "application/json".equalsIgnoreCase(header.getValue())) {
@@ -316,8 +353,6 @@ public class CollectionModelGenerator {
 							break;
 						}
 					}
-				} else if (r.getPostmanPreviewLanguage().equals("json")) {
-					jsonResponses.add(r);
 				}
 			}
 		}
